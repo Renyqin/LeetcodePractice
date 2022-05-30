@@ -1,7 +1,8 @@
+import random
 class Solution:
     # merge sort
     
-    def merge(self, l1, l2):
+    """def merge(self, l1, l2):
         new_array = []
         i = 0
         j = 0
@@ -29,4 +30,36 @@ class Solution:
     def sortArray(self, nums: List[int]) -> List[int]:
         
         return self.merge_sort(nums)
+    """
+    
+    def partition(self, l, r, nums):
+        pivot_index = random.randint(l,r-1)
+        pivot = nums[pivot_index]
         
+        nums[pivot_index], nums[l] = nums[l], nums[pivot_index]
+        
+        j = l
+        for i in range(l+1, r):
+            if nums[i] <= pivot:
+                j += 1
+                nums[j], nums[i] = nums[i], nums[j]
+
+        nums[l], nums[j] = nums[j], nums[l]
+        return j
+    
+    
+    def quickSort(self, l, r, nums):
+        if l >= r:
+            return 
+        
+        mid = self.partition(l, r, nums)
+        
+        
+        self.quickSort(l, mid, nums)
+        self.quickSort(mid+1, r, nums)
+    
+    def sortArray(self, nums: List[int]) -> List[int]:
+        self.quickSort(0, len(nums), nums)
+        return nums
+    
+    
