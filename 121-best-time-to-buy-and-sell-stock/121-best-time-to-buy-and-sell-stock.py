@@ -3,7 +3,9 @@ class Solution:
         minimum_buy = float('inf')
         max_gap = 0
         for price in prices:
-            minimum_buy = min(price, minimum_buy)
-            max_gap = max(price-minimum_buy, max_gap)
+            if price < minimum_buy:
+                minimum_buy = price
+            if price-minimum_buy > max_gap:
+                max_gap = price-minimum_buy
         return max_gap
             
