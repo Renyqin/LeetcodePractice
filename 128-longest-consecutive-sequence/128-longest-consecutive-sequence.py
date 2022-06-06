@@ -13,7 +13,8 @@ class Solution:
                     curr += 1
                     num+=1
                     
-                maximum = max(maximum, curr)
+                if curr > maximum:
+                    maximum = curr
 
         return maximum
             
