@@ -4,7 +4,7 @@ class Solution:
         for row in matrix:
             flat_rows += row
         
-        print(flat_rows)
+        # print(flat_rows)
         left = 0
         right = len(flat_rows)-1
         while right >= left:
