@@ -1,72 +1,67 @@
-import pdb
-
-
 class Node:
-    def __init__(self, key=None, nxt=None, prev=None):
+    def __init__(self, key=None, value=None, nxt=None, prev=None):
         self.key = key
-        self.next = nxt
+        self.value = value
+        self.nxt = nxt
         self.prev = prev
 
 class LRUCache:
 
     def __init__(self, capacity: int):
         self.capacity = capacity
-        # the format of key_dict shoud be {key: [value, count]}
-        self.key_dict = {}
         self.head = Node()
-        self.tail = self.head
-        self.dict_len = 0
+        self.tail = Node()
+        self.head.prev = self.tail
+        self.tail.next = self.head
+        self.node_dict = {}
         
-    def add_head(self, key):
-        self.head.prev = Node(key, self.head)
-        self.head = self.head.prev
-        
-        return 
-    
-    def remove_tail(self):
-        self.tail = self.tail.prev
-        return 
+    def insert_to_head(self, node):
+        node.prev = self.head.prev
+        node.next = self.head
+        self.head.prev.next = node
+        self.head.prev = node
         
     
-        
-    def get(self, key: int) -> int:
+    def remove_node(self, node):
+        node.next.prev = node.prev
+        node.prev.next = node.next
+        #node.next = None
+        #node.prev = None
+      
 
-        if key in self.key_dict:
-            self.add_head(key)
-            self.key_dict[key][1] += 1
-            return self.key_dict[key][0]
+    def put(self, key: int, value: int) -> None:
+        new_node = Node(key, value)
+
+        if key not in self.node_dict:
+
+            self.node_dict[key] = new_node
+            self.insert_to_head(new_node)
+            
+            if len(self.node_dict) > self.capacity:
+                tail_node = self.tail.next
+                self.remove_node(tail_node)
+                self.node_dict.pop(tail_node.key)
+            
+        else:
+            node = self.node_dict[key]
+            node.value = value
+            self.remove_node(node)
+            self.insert_to_head(node)
+            
+
+
+    def get(self, key: int) -> int:
+        if key in self.node_dict:
+            node = self.node_dict[key]
+            value = node.value
+            self.remove_node(node)
+            self.insert_to_head(node)
+            return value
+            
         else:
             return -1
         
-    
         
-        
-    def put(self, key: int, value: int) -> None:
-        
-        self.add_head(key)
-        if self.tail.key == None:
-            self.tail = self.head
-         
-        
-        
-        if key not in self.key_dict:
-
-            while self.dict_len >= self.capacity:
-                tail_key = self.tail.key
-                self.remove_tail()
-                self.key_dict[tail_key][1] -= 1
-
-                if self.key_dict[tail_key][1] == 0:
-                    self.key_dict.pop(tail_key)
-                    self.dict_len -= 1
-
-
-            
-            self.key_dict[key] = [value, 1]
-            self.dict_len += 1
-        else:
-            self.key_dict[key] = [value, self.key_dict[key][1]+1]
-     
         
 
 
