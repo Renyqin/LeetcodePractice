@@ -16,31 +16,27 @@ class Solution:
     
     def search(self, nums: List[int], target: int) -> int:
         
-        i = 1 
-        rot_end = rot_start = -1
+        left = 0
+        right = len(nums) -1
         
-        while i<len(nums):
-            if nums[i]<nums[i-1]:
-                rot_end = i-1
-                rot_start = i
+        while left <= right:
+            mid = left + (right-left)//2
+            if target == nums[mid]:
+                return mid
             
-            i+=1
-        #print(rot_start)
-            
-        if rot_end == -1:
-            return self.binary_search(nums, target)
-        
-        else:
-            first_search = self.binary_search(nums[:rot_start], target)
-            print()
-            if first_search != -1:
-                return first_search
-            else:
-                second_search =  self.binary_search(nums[rot_start:], target)
-                if second_search != -1:
-                    return rot_start + second_search
+            if nums[left] <= nums[mid]:
+                if target < nums[mid] and target >= nums[left]:
+                    right = mid - 1
                 else:
-                    return -1
+                    left = mid + 1
+            else:
+                if target > nums[mid] and target <= nums[right]:
+                    left = mid + 1
+                else:
+                    right = mid - 1
+        
+        return -1
+            
             
              
             
