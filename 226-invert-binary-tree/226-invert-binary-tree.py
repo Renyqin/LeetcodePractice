@@ -11,11 +11,13 @@ class Solution:
         if root == None:
             return
         
+        
+        self.helper(root.left)
+        self.helper(root.right)
+        
         temp = root.left
         root.left = root.right
         root.right = temp
-        self.helper(root.left)
-        self.helper(root.right)
     
     def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
         self.helper(root)
