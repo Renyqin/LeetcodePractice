@@ -1,12 +1,15 @@
 class Solution:
     def helper(self, nums, subset, ans):
-        ans.append(sorted(subset))
+        ans.append(subset)
         for i in range(len(nums)):
-            if sorted(subset+[nums[i]]) not in ans:
-                self.helper(nums[i+1:], subset+[nums[i]], ans)
+            if i>0 and nums[i] ==nums[i-1]:
+                continue
+            
+            self.helper(nums[i+1:], subset+[nums[i]], ans)
     
     def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
         ans = []
+        nums = sorted(nums)
         self.helper(nums, [], ans)
         return ans
         
