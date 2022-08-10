@@ -9,7 +9,7 @@ class Solution:
             if i not in path:
                 path.append(i)
                 self.backtrack(n, k , path, ans, i)
-                path.remove(i)
+                path.pop()
             
         
         
