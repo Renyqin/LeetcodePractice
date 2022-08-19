@@ -1,42 +1,30 @@
 class Solution:
-    
-    def expandFromCenter(self, s, longest, left, right, count, l_string):
-        while s[left] == s[right]:
-            count += 2
-                
-            if count > longest:
-                l_string = s[left:right+1]
-                longest = count
-                    
-            left -= 1
-            right += 1
-            if left < 0 or right >= len(s):
-                break
-        return longest, l_string
-    
     def longestPalindrome(self, s: str) -> str:
-        if len(s) <= 1:
+        if len(s) <2:
             return s
-        longest = 0
-        l_string = s[0]
-    
         
-        for i in range(len(s)-1):
-                
-            even_len, even_string = self.expandFromCenter(s, longest, i, i+1, 0,l_string)
-            if even_len > longest:
-                longest = even_len
-                l_string = even_string
-                
-            if i >0:
-                odd_len, odd_string = self.expandFromCenter(s, longest, i-1, i+1, 1,l_string)
-                if odd_len > longest:
-                    l_string = odd_string
-                    longest = odd_len
+        dp = [[None] * len(s) for i in range(len(s))]
+        for i in range(len(s)):
+            dp[i][i] = True
             
-                
+        for right in range(len(s)):
+            for left in range(right):
+                #print(str(j) + " " + str(i))
+                dp[left][right] = (s[left] == s[right]) and (right-left < 3 or dp[left+1][right-1])
         
-                    
-                
-        return l_string
-                
+        
+        #print(dp)
+        
+      
+        max_len = 0
+        max_string = s[0]
+        for right in range(len(s)-1, -1, -1):
+            for left in range(right-1, -1, -1):
+                if dp[left][right] and (right-left + 1) > max_len:
+                    max_len = right-left + 1
+                    max_string = s[left:right+1]
+            
+        
+            
+        return max_string
+        
