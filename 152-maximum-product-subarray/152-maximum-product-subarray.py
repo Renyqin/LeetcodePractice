@@ -10,4 +10,4 @@ class Solution:
             
                 
  
-        return max(max(dp), max(neg_dp))
+        return max(dp)
